@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:imagecaptioning/src/controller/auth/form_submission_status.dart';
 
 import 'package:imagecaptioning/src/controller/data_repository.dart';
-import 'package:imagecaptioning/src/model/user.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -27,7 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     emit(state.copyWith(
       username: username,
-      formStatus: state.validate(state.password, username),
+      formStatus: state.validate(username, state.password),
     ));
   }
 
@@ -38,7 +37,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final password = event.password;
     emit(state.copyWith(
       password: password,
-      formStatus: state.validate(password, state.username),
+      formStatus: state.validate(state.username, password),
     ));
   }
 
@@ -50,8 +49,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(formStatus: FormSubmitting()));
       try {
         await _dataRepository.authenticate(
-            username: state.username.toString(),
-            password: state.password.toString());
+            username: state.username, password: state.password);
 
         emit(state.copyWith(formStatus: SubmissionSuccess()));
       } catch (_) {

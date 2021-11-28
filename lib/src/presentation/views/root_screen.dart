@@ -5,6 +5,7 @@ import 'package:imagecaptioning/src/presentation/theme/style.dart';
 import 'package:imagecaptioning/src/presentation/views/home_page.dart';
 import 'package:imagecaptioning/src/presentation/views/notification_page.dart';
 import 'package:imagecaptioning/src/presentation/views/profile_page.dart';
+import 'package:imagecaptioning/src/presentation/views/registration_page.dart';
 import 'package:imagecaptioning/src/presentation/views/search_page.dart';
 import 'package:imagecaptioning/src/presentation/views/upload_page.dart';
 import 'package:imagecaptioning/src/utils/bottom_nav_bar_json.dart';
@@ -30,13 +31,7 @@ class _RootScreenState extends State<RootScreen> {
   Widget getBody() {
     return IndexedStack(
       index: indexPage,
-      children: const [
-        HomePage(),
-        SearchPage(),
-        UploadPage(),
-        NotificationPage(),
-        ProfilePage(),
-      ],
+      children: [RegistrationPage()],
     );
   }
 

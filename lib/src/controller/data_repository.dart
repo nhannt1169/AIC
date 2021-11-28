@@ -6,6 +6,10 @@ import 'package:imagecaptioning/src/model/user.dart';
 abstract class UserBehavior {
   Future<User> authenticate(
       {required String username, required String password});
+  Future<User> registerDefault(
+      {required String username,
+      required String password,
+      required String email});
 }
 
 class DataRepository extends UserBehavior {
@@ -65,5 +69,27 @@ class DataRepository extends UserBehavior {
     }
 
     return utf8.decode(base64Url.decode(output));
+  }
+
+  @override
+  Future<User> registerDefault(
+      {required String username,
+      required String password,
+      required String email}) async {
+    Response userData = await _dio.post(_baseUrl + '/users/registrationdefault',
+        data: {
+          'user_name': username,
+          'user_email': email,
+          'user_password': password
+        });
+
+    print('User Info: ${userData.data}');
+
+    UserMessage userMessage = UserMessage.fromJson(userData.data);
+    print(userMessage.data.toString());
+    User user = User.fromJson(parseJwt(userMessage.data.toString()));
+    Map<String, dynamic> map = parseJwt(userMessage.data.toString());
+    print(map);
+    return user;
   }
 }
